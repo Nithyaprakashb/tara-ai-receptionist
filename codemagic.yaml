@@ -2,28 +2,37 @@ workflows:
   ios-unsigned-build:
     name: iOS Unsigned Build
     max_build_duration: 60
+
     instance_type: mac_mini_m1
+
     environment:
-      flutter: stable 
+      flutter: stable
       xcode: latest
       cocoapods: default
+
     triggering:
       events:
         - push
       branch_patterns:
         - pattern: 'main'
           include: true
+
     scripts:
-      - name: Install dependencies
+      - name: Install Dependencies
         script: |
           flutter pub get
-      - name: Build iOS App Bundle
+
+      - name: Build Release iOS App
         script: |
-          flutter build ios --debug --no-codesign
-      - name: Pack IPA
+          flutter build ios --release --no-codesign
+
+      - name: Create IPA
         script: |
           mkdir Payload
-          cp -r build/ios/iphoneos/Runner.app Payload/
-          zip -r unsigned_app.ipa Payload
+          cp -R build/ios/iphoneos/Runner.app Payload/
+          cd Payload
+          zip -r ../tara_release.ipa .
+          cd ..
+
     artifacts:
-      - unsigned_app.ipa
+      - tara_release.ipa
