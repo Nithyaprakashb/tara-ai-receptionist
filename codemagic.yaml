@@ -4,14 +4,15 @@ workflows:
     max_build_duration: 60
     instance_type: mac_mini_m1
     environment:
-      flutter: stable # Change to 'node' or 'xcodes' if using React Native or Native iOS
+      flutter: stable 
       xcode: latest
       cocoapods: default
     triggering:
       events:
         - push
-      branches:
-        - main
+      branch_filter:
+        target_branch:
+          - main
     scripts:
       - name: Install dependencies
         script: |
