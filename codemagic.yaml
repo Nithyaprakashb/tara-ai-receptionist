@@ -10,9 +10,9 @@ workflows:
     triggering:
       events:
         - push
-      branch_filter:
-        target_branch:
-          - main
+      branch_patterns:
+        - pattern: 'main'
+          include: true
     scripts:
       - name: Install dependencies
         script: |
