@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import '../../services/bluetooth_service.dart';
+
 import '../../providers/robot_provider.dart';
 import '../../services/bluetooth_service.dart';
 
@@ -16,6 +17,8 @@ class IoTScreen extends StatelessWidget {
     RobotProvider robot,
     bool value,
   ) async {
+    HapticFeedback.selectionClick();
+
     if (value) {
       await BluetoothService.instance
           .relay1On();
@@ -31,6 +34,8 @@ class IoTScreen extends StatelessWidget {
     RobotProvider robot,
     bool value,
   ) async {
+    HapticFeedback.selectionClick();
+
     if (value) {
       await BluetoothService.instance
           .relay2On();
@@ -66,159 +71,169 @@ class IoTScreen extends StatelessWidget {
 
           const SizedBox(height: 24),
 
-          GlassCard(
-            child: Row(
-              children: [
-                const Expanded(
-                  child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment
-                            .start,
-                    children: [
-                      Text(
-                        'Relay 1',
-                        style: TextStyle(
-                          color:
-                              Colors.white,
-                          fontSize: 18,
-                          fontWeight:
-                              FontWeight
-                                  .w700,
+          AnimatedScale(
+            scale: robot.relay1 ? 1.02 : 1,
+            duration: const Duration(
+              milliseconds: 250,
+            ),
+            child: GlassCard(
+              child: Row(
+                children: [
+                  const Expanded(
+                    child: Column(
+                      crossAxisAlignment:
+                          CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Relay 1',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight:
+                                FontWeight.w700,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        'Control device connected to Relay 1',
-                        style: TextStyle(
-                          color:
-                              Colors.white70,
+                        SizedBox(height: 8),
+                        Text(
+                          'Control device connected to Relay 1',
+                          style: TextStyle(
+                            color:
+                                Colors.white70,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
 
-                Switch.adaptive(
-                  value: robot.relay1,
-                  onChanged: (value) =>
-                      _toggleRelay1(
-                    robot,
-                    value,
+                  Switch.adaptive(
+                    value: robot.relay1,
+                    onChanged: (value) =>
+                        _toggleRelay1(
+                      robot,
+                      value,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
 
           const SizedBox(height: 16),
 
-          GlassCard(
-            child: Row(
-              children: [
-                const Expanded(
-                  child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment
-                            .start,
-                    children: [
-                      Text(
-                        'Relay 2',
-                        style: TextStyle(
-                          color:
-                              Colors.white,
-                          fontSize: 18,
-                          fontWeight:
-                              FontWeight
-                                  .w700,
+          AnimatedScale(
+            scale: robot.relay2 ? 1.02 : 1,
+            duration: const Duration(
+              milliseconds: 250,
+            ),
+            child: GlassCard(
+              child: Row(
+                children: [
+                  const Expanded(
+                    child: Column(
+                      crossAxisAlignment:
+                          CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Relay 2',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight:
+                                FontWeight.w700,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        'Control device connected to Relay 2',
-                        style: TextStyle(
-                          color:
-                              Colors.white70,
+                        SizedBox(height: 8),
+                        Text(
+                          'Control device connected to Relay 2',
+                          style: TextStyle(
+                            color:
+                                Colors.white70,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
 
-                Switch.adaptive(
-                  value: robot.relay2,
-                  onChanged: (value) =>
-                      _toggleRelay2(
-                    robot,
-                    value,
+                  Switch.adaptive(
+                    value: robot.relay2,
+                    onChanged: (value) =>
+                        _toggleRelay2(
+                      robot,
+                      value,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
 
           const SizedBox(height: 32),
 
-          GlassCard(
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.memory,
-                      color: Colors.white,
-                    ),
-
-                    const SizedBox(
-                      width: 12,
-                    ),
-
-                    Text(
-                      robot.connected
-                          ? 'ESP32-S3 Connected'
-                          : 'ESP32-S3 Offline',
-                      style:
-                          const TextStyle(
-                        color:
-                            Colors.white,
-                        fontWeight:
-                            FontWeight
-                                .w600,
+          AnimatedContainer(
+            duration: const Duration(
+              milliseconds: 300,
+            ),
+            curve: Curves.easeOutCubic,
+            child: GlassCard(
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.memory,
+                        color: Colors.white,
                       ),
-                    ),
-                  ],
-                ),
 
-                const SizedBox(
-                  height: 16,
-                ),
-
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.bluetooth,
-                      color: Colors.white,
-                    ),
-
-                    const SizedBox(
-                      width: 12,
-                    ),
-
-                    Text(
-                      robot.connected
-                          ? 'BLE Active'
-                          : 'BLE Disconnected',
-                      style:
-                          const TextStyle(
-                        color:
-                            Colors.white,
-                        fontWeight:
-                            FontWeight
-                                .w600,
+                      const SizedBox(
+                        width: 12,
                       ),
-                    ),
-                  ],
-                ),
-              ],
+
+                      Text(
+                        robot.connected
+                            ? 'ESP32-S3 Connected'
+                            : 'ESP32-S3 Offline',
+                        style:
+                            const TextStyle(
+                          color:
+                              Colors.white,
+                          fontWeight:
+                              FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(
+                    height: 16,
+                  ),
+
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.bluetooth,
+                        color: Colors.white,
+                      ),
+
+                      const SizedBox(
+                        width: 12,
+                      ),
+
+                      Text(
+                        robot.connected
+                            ? 'BLE Active'
+                            : 'BLE Disconnected',
+                        style:
+                            const TextStyle(
+                          color:
+                              Colors.white,
+                          fontWeight:
+                              FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ],

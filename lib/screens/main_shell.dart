@@ -39,15 +39,29 @@ class MainShell extends StatelessWidget {
           child: Stack(
             children: [
               AnimatedSwitcher(
-                duration: const Duration(
-                  milliseconds: 350,
-                ),
-                child: IndexedStack(
-                  key: ValueKey(
-                    provider.selectedTab,
-                  ),
-                  index: provider.selectedTab,
-                  children: screens,
+                duration: const Duration(milliseconds: 450),
+                switchInCurve: Curves.easeOutCubic,
+                switchOutCurve: Curves.easeInCubic,
+
+                transitionBuilder: (
+                  Widget child,
+                  Animation<double> animation,
+                ) {
+                  return FadeTransition(
+                    opacity: animation,
+                    child: SlideTransition(
+                      position: Tween<Offset>(
+                        begin: const Offset(0.08, 0),
+                        end: Offset.zero,
+                      ).animate(animation),
+                      child: child,
+                    ),
+                  );
+                },
+
+                child: Container(
+                  key: ValueKey(provider.selectedTab),
+                  child: screens[provider.selectedTab],
                 ),
               ),
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import '../../services/bluetooth_service.dart';
+
 import '../../providers/robot_provider.dart';
 import '../../services/bluetooth_service.dart';
 
@@ -33,8 +34,7 @@ class ExpressionsScreen extends StatelessWidget {
         140,
       ),
       child: Column(
-        crossAxisAlignment:
-            CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SectionHeader(
             title: 'Expressions',
@@ -64,94 +64,119 @@ class ExpressionsScreen extends StatelessWidget {
                   robot.currentExpression ==
                   expression.$1;
 
-              return GestureDetector(
-                onTap: () async {
-                  await BluetoothService.instance
-                      .sendExpression(
-                    expression.$1,
-                  );
-
-                  robot.setExpression(
-                    expression.$1,
+              return TweenAnimationBuilder<double>(
+                duration: const Duration(
+                  milliseconds: 250,
+                ),
+                curve: Curves.easeOutBack,
+                tween: Tween(
+                  begin: 1,
+                  end: selected ? 1.04 : 1,
+                ),
+                builder: (
+                  context,
+                  scale,
+                  child,
+                ) {
+                  return Transform.scale(
+                    scale: scale,
+                    child: child,
                   );
                 },
-                child: AnimatedContainer(
-                  duration:
-                      const Duration(
-                    milliseconds: 250,
-                  ),
-                  curve:
-                      Curves.easeOutCubic,
-                  child: GlassCard(
-                    child: Column(
-                      mainAxisAlignment:
-                          MainAxisAlignment
-                              .center,
-                      children: [
-                        Expanded(
-                          child: Image.asset(
-                            expression.$2,
-                            fit: BoxFit.contain,
-                            errorBuilder:
-                                (
-                                  context,
-                                  error,
-                                  stackTrace,
-                                ) {
-                              return const Icon(
-                                Icons.face,
-                                size: 80,
-                                color:
-                                    Colors.white,
-                              );
-                            },
-                          ),
-                        ),
+                child: GestureDetector(
+                  onTap: () async {
+                    HapticFeedback.mediumImpact();
 
-                        const SizedBox(
-                          height: 12,
-                        ),
+                    await BluetoothService.instance
+                        .sendExpression(
+                      expression.$1,
+                    );
 
-                        Text(
-                          expression.$1,
-                          style:
-                              const TextStyle(
-                            color:
-                                Colors.white,
-                            fontWeight:
-                                FontWeight
-                                    .w700,
-                            fontSize: 15,
-                          ),
-                        ),
-
-                        const SizedBox(
-                          height: 8,
-                        ),
-
-                        AnimatedContainer(
-                          duration:
-                              const Duration(
-                            milliseconds:
-                                250,
-                          ),
-                          height: 4,
-                          width: 60,
-                          decoration:
-                              BoxDecoration(
-                            borderRadius:
-                                BorderRadius
-                                    .circular(
-                              20,
+                    robot.setExpression(
+                      expression.$1,
+                    );
+                  },
+                  child: AnimatedContainer(
+                    duration: const Duration(
+                      milliseconds: 300,
+                    ),
+                    curve: Curves.easeOutBack,
+                    decoration: BoxDecoration(
+                      borderRadius:
+                          BorderRadius.circular(
+                        24,
+                      ),
+                    ),
+                    child: GlassCard(
+                      child: Column(
+                        mainAxisAlignment:
+                            MainAxisAlignment
+                                .center,
+                        children: [
+                          Expanded(
+                            child: Image.asset(
+                              expression.$2,
+                              fit: BoxFit.contain,
+                              errorBuilder: (
+                                context,
+                                error,
+                                stackTrace,
+                              ) {
+                                return const Icon(
+                                  Icons.face,
+                                  size: 80,
+                                  color:
+                                      Colors.white,
+                                );
+                              },
                             ),
-                            color: selected
-                                ? Colors
-                                    .purpleAccent
-                                : Colors
-                                    .transparent,
                           ),
-                        ),
-                      ],
+
+                          const SizedBox(
+                            height: 12,
+                          ),
+
+                          Text(
+                            expression.$1,
+                            style:
+                                const TextStyle(
+                              color:
+                                  Colors.white,
+                              fontWeight:
+                                  FontWeight.w700,
+                              fontSize: 15,
+                            ),
+                          ),
+
+                          const SizedBox(
+                            height: 8,
+                          ),
+
+                          AnimatedContainer(
+                            duration:
+                                const Duration(
+                              milliseconds:
+                                  250,
+                            ),
+                            height: 4,
+                            width: 60,
+                            decoration:
+                                BoxDecoration(
+                              borderRadius:
+                                  BorderRadius
+                                      .circular(
+                                20,
+                              ),
+                              color: selected
+                                  ? const Color(
+                                      0xFF8B5CF6,
+                                    )
+                                  : Colors
+                                      .transparent,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
