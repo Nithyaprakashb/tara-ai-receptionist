@@ -1,0 +1,51 @@
+name: robot_app_exe
+description: TARA AI Receptionist
+publish_to: "none"
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.8.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+
+  # State Management
+  provider: ^6.1.5
+
+  # BLE
+  flutter_blue_plus: ^1.35.5
+
+  # Permissions
+  permission_handler: ^12.0.1
+
+  # Fonts
+  google_fonts: ^6.3.1
+
+  # Animations
+  flutter_animate: ^4.5.2
+
+  # Glassmorphism
+  glassmorphism: ^3.0.0
+
+  # SVG
+  flutter_svg: ^2.2.0
+
+  # Lottie
+  lottie: ^3.3.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/expressions/
